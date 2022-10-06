@@ -21,7 +21,7 @@ jobs:
           script: npm publish --tag latest
           skip_cleanup: true
           on:
-            branch: master
+            branch: main
         - provider: script
           script: npm publish --tag next
           skip_cleanup: true

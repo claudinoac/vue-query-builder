@@ -1,5 +1,5 @@
 {
-  "name": "vue-query-builder",
+  "name": "@converseon/vue-query-builder",
   "version": "0.8.3",
   "scripts": {
     "serve": "vue-cli-service serve --name VueQueryBuilder src/main.js",
