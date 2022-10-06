@@ -3,7 +3,7 @@
     <slot v-bind="vqbProps">
       <query-builder-group
         v-bind="vqbProps"
-        :query.sync="query"
+        v-model:query="query"
       />
     </slot>
   </div>
@@ -29,11 +29,9 @@ var defaultLabels = {
 
 export default {
   name: 'VueQueryBuilder',
-
   components: {
     QueryBuilderGroup
   },
-
   props: {
     rules: Array,
     labels: {
@@ -44,18 +42,18 @@ export default {
     },
     maxDepth: {
       type: Number,
-      default: 3,
+      default: 6,
       validator: function (value) {
         return value >= 1
       }
     },
-    value: Object
+    modelValue: Object
   },
-
+  emits: ['update:modelValue'],
   data () {
     return {
       query: {
-        logicalOperator: this.labels.matchTypes[0].id,
+        logicalOperator: null,
         children: []
       },
       ruleTypes: {
@@ -101,19 +99,17 @@ export default {
       }
     }
   },
-
   computed: {
     mergedLabels () {
       return Object.assign({}, defaultLabels, this.labels);
     },
-
     mergedRules () {
       var mergedRules = [];
-      var vm = this;
+      var that = this;
 
-      vm.rules.forEach(function(rule){
-        if ( typeof vm.ruleTypes[rule.type] !== "undefined" ) {
-          mergedRules.push( Object.assign({}, vm.ruleTypes[rule.type], rule) );
+      that.rules?.forEach(function(rule){
+        if ( typeof that.ruleTypes[rule.type] !== "undefined" ) {
+          mergedRules.push( Object.assign({}, that.ruleTypes[rule.type], rule) );
         } else {
           mergedRules.push( rule );
         }
@@ -121,7 +117,6 @@ export default {
 
       return mergedRules;
     },
-
     vqbProps () {
       return {
         index: 0,
@@ -133,30 +128,28 @@ export default {
       }
     }
   },
+  watch: {
+    'query': {
+        deep: true,
+        handler(newQuery) {
+            if (JSON.stringify(newQuery) !== JSON.stringify(this.value)) {
+              this.$emit('update:modelValue', deepClone(newQuery));
+            }
+        },
+    },
+    'value': {
+        deep: true,
+        handler(newValue) {
+            if (JSON.stringify(newValue) !== JSON.stringify(this.query)) {
+              this.query = deepClone(newValue);
+            }
 
+        }
+    }
+  },
   mounted () {
-    this.$watch(
-      'query',
-      newQuery => {
-        if (JSON.stringify(newQuery) !== JSON.stringify(this.value)) {
-          this.$emit('input', deepClone(newQuery));
-        }
-      }, {
-      deep: true
-    });
-
-    this.$watch(
-      'value',
-      newValue => {
-        if (JSON.stringify(newValue) !== JSON.stringify(this.query)) {
-          this.query = deepClone(newValue);
-        }
-      }, {
-      deep: true
-    });
-
-    if ( typeof this.$options.propsData.value !== "undefined" ) {
-      this.query = Object.assign(this.query, this.$options.propsData.value);
+    if ( typeof this.value !== "undefined" ) {
+      this.query = Object.assign(this.query, this.value);
     }
   }
 }

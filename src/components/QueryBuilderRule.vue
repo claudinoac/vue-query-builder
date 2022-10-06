@@ -41,7 +41,13 @@ export default {
 
   beforeMount () {
     if (this.rule.type === 'custom-component') {
-      this.$options.components[this.id] = this.rule.component;
+      if (!this.$options.components) {
+        this.$options.components = {
+            [this.id]: this.rule.component,
+        }
+      } else {
+            this.$options.components[this.id] = this.rule.component;
+      }
     }
   },
 

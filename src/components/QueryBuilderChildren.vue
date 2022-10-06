@@ -4,8 +4,8 @@
       :is="getComponent(child.type)"
       v-for="(child, index) in query.children"
       :key="index"
+      v-model:query="child.query"
       :type="child.type"
-      :query.sync="child.query"
       :rule-types="ruleTypes"
       :rules="rules"
       :rule="$parent.ruleById(child.query.rule)"
@@ -31,7 +31,7 @@ export default {
   },
 
   mounted() {
-    this.groupComponent = this.$parent.$options.components['QueryBuilderGroup'];
+    this.groupComponent = { ...this.$parent.$options };
     this.ruleComponent = this.$parent.$options.components['QueryBuilderRule'];
   },
 

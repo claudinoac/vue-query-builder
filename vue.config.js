@@ -1,4 +1,7 @@
 module.exports = {
     runtimeCompiler: true,
-    lintOnSave: false
+    lintOnSave: false,
+    css: {
+        extract: false,
+    }
 }

@@ -1,0 +1,29 @@
+language: node_js
+node_js:
+  - 14
+
+script:
+  - yarn test:unit
+
+jobs:
+  include:
+    - stage: deploy
+      node_js: 14
+      install: yarn install
+      script:
+        - yarn build
+      before_deploy:
+        - npm i -g npm-cli-login
+        - npm-cli-login -u converseonbuildserver -p $GITHUB_TOKEN -e "no-reply@converseon.com" -r https://npm.pkg.github.com -s "@converseon"
+        - CURRENT_VERSION=$(node -pe 'require("./package.json")["version"]')
+      deploy:
+        - provider: script
+          script: npm publish --tag latest
+          skip_cleanup: true
+          on:
+            branch: master
+        - provider: script
+          script: npm publish --tag next
+          skip_cleanup: true
+          on:
+            branch: dev

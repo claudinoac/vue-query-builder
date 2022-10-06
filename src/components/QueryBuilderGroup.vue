@@ -12,7 +12,6 @@ export default {
     // eslint-disable-next-line vue/no-unused-components
     QueryBuilderChildren
   },
-
   props: {
     ruleTypes: Object,
     type: {
@@ -26,6 +25,7 @@ export default {
     depth: Number,
     labels: Object
   },
+  emits: ['update:query'],
 
   data() {
     return {
@@ -72,7 +72,7 @@ export default {
         updated_query.children.push({
           type: 'query-builder-group',
           query: {
-            logicalOperator: this.labels.matchTypes[0].id,
+            logicalOperator: this.labels.matchTypes[0].value,
             children: []
           }
         });

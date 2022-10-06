@@ -1,30 +1,34 @@
-const path = require('path');
+import { defaultTheme } from '@vuepress/theme-default';
+import { defineUserConfig } from 'vuepress';
 
-module.exports = {
+export default defineUserConfig({
     title: 'Vue Query Builder',
-    description: 'A UI component for building complex queries with nested conditionals.',
-    base: '/vue-query-builder/',
+    theme: defaultTheme({
+        locale: {
+            '/': {
+                lang: 'en-US',
+                title: 'VuePress',
+                description: 'A UI component for building complex queries with nested conditionals.',
+                repo: 'dabernathy89/vue-query-builder',
+                docsDir: 'docs',
+                docsBranch: 'gh-pages',
+                editLinks: true,
+                sidebar: [
+                    ['/', 'Introduction'],
+                    ['/demos', 'Demos'],
+                    ['/getting-started', 'Getting Started'],
+                    ['/configuration', 'Configuration'],
+                    ['/custom-templates', 'Custom Templates'],
+                    ['/roadmap', 'Roadmap'],
+                    ['/contributing', 'Contributing'],
+                    ['/about', 'About'],
+                ],
+                nav: [],
+            },
+        },
 
-    themeConfig: {
-        nav: [
-        ],
 
-        repo: 'dabernathy89/vue-query-builder',
-        docsDir: 'docs',
-        docsBranch: 'gh-pages',
-        editLinks: true,
-
-        sidebar: [
-            ['/', 'Introduction'],
-            ['/demos', 'Demos'],
-            ['/getting-started', 'Getting Started'],
-            ['/configuration', 'Configuration'],
-            ['/custom-templates', 'Custom Templates'],
-            ['/roadmap', 'Roadmap'],
-            ['/contributing', 'Contributing'],
-            ['/about', 'About'],
-        ]
-    },
+    }),
 
     // configureWebpack: {
     //     resolve: {
@@ -43,4 +47,4 @@ module.exports = {
     //     }]
     //   }
     // };
-}
+});

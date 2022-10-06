@@ -18,9 +18,10 @@ module.exports = {
       },
       "svg": "always",
       "math": "always"
-    }]
+    }],
+    'vue/no-v-model-argument': 'off',
   },
   parserOptions: {
-    parser: 'babel-eslint'
+    parser: '@babel/eslint-parser'
   }
 }
